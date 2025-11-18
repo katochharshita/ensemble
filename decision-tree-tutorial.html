@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santa's Gift Tree - Page 1: Decision Trees</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .question {
+            text-align: center;
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        /* Card Flip Container */
+        .cards-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .card-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .card-wrapper {
+            perspective: 1000px;
+            width: 100%;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .card-back {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .class-number {
+            font-size: 4em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .class-label {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .click-hint {
+            font-size: 1.2em;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+
+        /* Dataset Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 1.1em;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr.correct {
+            background: #d4edda;
+        }
+
+        tr.incorrect {
+            background: #f8d7da;
+        }
+
+        /* Feature Selection Buttons */
+        .feature-selection {
+            margin: 20px 0;
+        }
+
+        .feature-selection h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #667eea;
+            color: white;
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.selected {
+            background: #28a745;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Decision Tree Display */
+        .tree-container {
+            width: 100%;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .tree-container.show {
+            display: block;
+        }
+
+        .tree {
+            display: inline-block;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            line-height: 1.8;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+        }
+
+        .tree-node {
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+            font-size: 1.3em;
+        }
+
+        .tree-branches {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .tree-left, .tree-right {
+            padding: 15px 20px;
+            background: white;
+            border-radius: 5px;
+            min-width: 140px;
+            border: 2px solid;
+        }
+
+        .tree-left {
+            color: #28a745;
+            border-color: #28a745;
+        }
+
+        .tree-right {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .hint {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* Navigation */
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .nav-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Snow Section */
+        .snow-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            border-radius: 15px;
+            border: 3px solid #00acc1;
+            display: none;
+        }
+
+        .snow-section.show {
+            display: block;
+        }
+
+        .snow-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .snow-header h2 {
+            color: #006064;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .snow-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .snow-button {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            background: #00acc1;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .snow-button:hover {
+            background: #0097a7;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .predictions-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .prediction-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #00acc1;
+            text-align: center;
+        }
+
+        .prediction-box h3 {
+            color: #006064;
+            margin-bottom: 15px;
+        }
+
+        .prediction-result {
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .prediction-result.storybook {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .prediction-result.football {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        .variance-insight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎅 Santa's Gift Tree 🎄</h1>
+        
+        <div class="question">
+            <p><strong>Santa decides to gift students based on their age.</strong></p>
+            <p>He sends two of his elves into two different classes to make a decision tree.</p>
+            <p>Help the elves! Based on the dataset of students, help choose the deciding criteria for the gifts.</p>
+        </div>
+
+        <div class="cards-container">
+            <!-- Class 1 Column -->
+            <div class="card-column">
+                <div class="card-wrapper">
+                    <div class="card" id="card1" onclick="flipCard(1)">
+                        <div class="card-front">
+                            <div class="class-number">1</div>
+                            <div class="class-label">Class 1</div>
+                            <div class="click-hint">👆 Click to see the class</div>
+                        </div>
+                        <div class="card-back">
+                            <h2 style="color: #667eea; margin-bottom: 15px;">🧝‍♂️ Elf 1's Class</h2>
+                            <table id="dataset1">
+                                <thead>
+                                    <tr>
+                                        <th>Child</th>
+                                        <th>Age</th>
+                                        <th>Gift</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Asha</td><td>8</td><td>📚 Storybook</td></tr>
+                                    <tr><td>Ben</td><td>9</td><td>📚 Storybook</td></tr>
+                                    <tr><td>Cara</td><td>10</td><td>📚 Storybook</td></tr>
+                                    <tr><td>Dan</td><td>11</td><td>🏈 Football</td></tr>
+                                    <tr><td>Eva</td><td>12</td><td>🏈 Football</td></tr>
+                                    <tr><td>Finn</td><td>13</td><td>🏈 Football</td></tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="feature-selection">
+                                <h3>Choose the best split:</h3>
+                                <div class="button-group">
+                                    <button onclick="selectSplit(1, 11); event.stopPropagation();">Age < 11 ?</button>
+                                    <button onclick="selectSplit(1, 12); event.stopPropagation();">Age < 12 ?</button>
+                                    <button onclick="selectSplit(1, 13); event.stopPropagation();">Age < 13 ?</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decision Tree for Class 1 -->
+                <div id="tree1" class="tree-container">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">🧝‍♂️ Elf 1's Decision Tree</h3>
+                    <div class="tree">
+                        <div class="tree-node" id="tree1-node">Age < ? ?</div>
+                        <div class="tree-branches">
+                            <div class="tree-left" id="tree1-left">📚 Storybook</div>
+                            <div class="tree-right" id="tree1-right">🏈 Football</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class 2 Column -->
+            <div class="card-column">
+                <div class="card-wrapper">
+                    <div class="card" id="card2" onclick="flipCard(2)">
+                        <div class="card-front">
+                            <div class="class-number">2</div>
+                            <div class="class-label">Class 2</div>
+                            <div class="click-hint">👆 Click to see the class</div>
+                        </div>
+                        <div class="card-back">
+                            <h2 style="color: #667eea; margin-bottom: 15px;">🧝‍♀️ Elf 2's Class</h2>
+                            <table id="dataset2">
+                                <thead>
+                                    <tr>
+                                        <th>Child</th>
+                                        <th>Age</th>
+                                        <th>Gift</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Gita</td><td>10</td><td>📚 Storybook</td></tr>
+                                    <tr><td>Hari</td><td>11</td><td>📚 Storybook</td></tr>
+                                    <tr><td>Isha</td><td>12</td><td>📚 Storybook</td></tr>
+                                    <tr><td>Jai</td><td>13</td><td>📚 Storybook</td></tr>
+                                    <tr><td>Kiara</td><td>14</td><td>🏈 Football</td></tr>
+                                    <tr><td>Liam</td><td>15</td><td>🏈 Football</td></tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="feature-selection">
+                                <h3>Choose the best split:</h3>
+                                <div class="button-group">
+                                    <button onclick="selectSplit(2, 11); event.stopPropagation();">Age < 11 ?</button>
+                                    <button onclick="selectSplit(2, 12); event.stopPropagation();">Age < 12 ?</button>
+                                    <button onclick="selectSplit(2, 14); event.stopPropagation();">Age < 14 ?</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decision Tree for Class 2 -->
+                <div id="tree2" class="tree-container">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">🧝‍♀️ Elf 2's Decision Tree</h3>
+                    <div class="tree">
+                        <div class="tree-node" id="tree2-node">Age < ? ?</div>
+                        <div class="tree-branches">
+                            <div class="tree-left" id="tree2-left">📚 Storybook</div>
+                            <div class="tree-right" id="tree2-right">🏈 Football</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Snow Section (appears when both trees are created) -->
+        <div id="snow-section" class="snow-section">
+            <div class="snow-header">
+                <h2>❄️ A New Student Joins! ❄️</h2>
+            </div>
+            <div class="snow-info">
+                <p><strong>Snow</strong> just joined the school!</p>
+                <p>Age: <strong>13</strong></p>
+                <p>Help find a gift for her!</p>
+            </div>
+            <button class="snow-button" onclick="findGiftForSnow()">Find Gift for Snow</button>
+            
+            <div id="snow-predictions" style="display: none;">
+                <div class="predictions-container">
+                    <div class="prediction-box">
+                        <h3>🧝‍♂️ Elf 1's Prediction</h3>
+                        <div id="elf1-snow-pred" class="prediction-result"></div>
+                    </div>
+                    <div class="prediction-box">
+                        <h3>🧝‍♀️ Elf 2's Prediction</h3>
+                        <div id="elf2-snow-pred" class="prediction-result"></div>
+                    </div>
+                </div>
+                <div class="variance-insight">
+                    <p><strong>What just happened?</strong></p>
+                    <p>The two elves made different trees because they trained on slightly different groups of children. Even small changes in data can lead to different rules. This shows that decision trees can change easily depending on the examples they see.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" onclick="window.location.href='page2.html'">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        // Dataset 1: Training Set 1 - clear split at Age < 11
+        const dataset1 = [
+            {name: 'Asha', age: 8, gift: 'Storybook'},
+            {name: 'Ben', age: 9, gift: 'Storybook'},
+            {name: 'Cara', age: 10, gift: 'Storybook'},
+            {name: 'Dan', age: 11, gift: 'Football'},
+            {name: 'Eva', age: 12, gift: 'Football'},
+            {name: 'Finn', age: 13, gift: 'Football'}
+        ];
+
+        // Dataset 2: Training Set 2 - clear split at Age < 14
+        const dataset2 = [
+            {name: 'Gita', age: 10, gift: 'Storybook'},
+            {name: 'Hari', age: 11, gift: 'Storybook'},
+            {name: 'Isha', age: 12, gift: 'Storybook'},
+            {name: 'Jai', age: 13, gift: 'Storybook'},
+            {name: 'Kiara', age: 14, gift: 'Football'},
+            {name: 'Liam', age: 15, gift: 'Football'}
+        ];
+
+        // Store the selected thresholds for each tree
+        let tree1Threshold = null;
+        let tree2Threshold = null;
+
+        /**
+         * Flip a card to show/hide the dataset
+         * @param {number} cardNum - 1 or 2
+         */
+        function flipCard(cardNum) {
+            const card = document.getElementById(`card${cardNum}`);
+            card.classList.toggle('flipped');
+        }
+
+        /**
+         * Check if both trees are created and show Snow section
+         */
+        function checkBothTreesCreated() {
+            if (tree1Threshold !== null && tree2Threshold !== null) {
+                const snowSection = document.getElementById('snow-section');
+                snowSection.classList.add('show');
+            }
+        }
+
+        /**
+         * Select a split threshold for a dataset
+         * @param {number} datasetNum - 1 or 2
+         * @param {number} threshold - Age threshold to test
+         */
+        function selectSplit(datasetNum, threshold) {
+            const dataset = datasetNum === 1 ? dataset1 : dataset2;
+            const tableId = `dataset${datasetNum}`;
+            const treeId = `tree${datasetNum}`;
+            
+            // Store the threshold
+            if (datasetNum === 1) {
+                tree1Threshold = threshold;
+            } else {
+                tree2Threshold = threshold;
+            }
+            
+            // Remove previous selections
+            const card = document.getElementById(`card${datasetNum}`);
+            card.querySelectorAll('button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Mark selected button
+            event.target.classList.add('selected');
+            
+            // Show tree below the cards
+            const treeContainer = document.getElementById(treeId);
+            treeContainer.classList.add('show');
+            
+            // Update tree display
+            document.getElementById(`${treeId}-node`).textContent = `Age < ${threshold} ?`;
+            
+            // Evaluate predictions and color table rows
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach((row, index) => {
+                const child = dataset[index];
+                const predictedGift = child.age < threshold ? 'Storybook' : 'Football';
+                const isCorrect = predictedGift === child.gift;
+                
+                row.classList.remove('correct', 'incorrect');
+                if (isCorrect) {
+                    row.classList.add('correct');
+                } else {
+                    row.classList.add('incorrect');
+                }
+            });
+            
+            // Check if both trees are created
+            checkBothTreesCreated();
+        }
+
+        /**
+         * Find gift for Snow using both trees
+         */
+        function findGiftForSnow() {
+            if (tree1Threshold === null || tree2Threshold === null) {
+                alert('Please create both decision trees first!');
+                return;
+            }
+
+            const snowAge = 13;
+            const predictionsDiv = document.getElementById('snow-predictions');
+            predictionsDiv.style.display = 'block';
+
+            // Get predictions from both trees
+            const elf1Prediction = snowAge < tree1Threshold ? 'Storybook' : 'Football';
+            const elf2Prediction = snowAge < tree2Threshold ? 'Storybook' : 'Football';
+
+            // Display predictions
+            const elf1Div = document.getElementById('elf1-snow-pred');
+            const elf2Div = document.getElementById('elf2-snow-pred');
+
+            elf1Div.textContent = elf1Prediction === 'Storybook' ? '📚 Storybook' : '🏈 Football';
+            elf1Div.className = `prediction-result ${elf1Prediction.toLowerCase()}`;
+
+            elf2Div.textContent = elf2Prediction === 'Storybook' ? '📚 Storybook' : '🏈 Football';
+            elf2Div.className = `prediction-result ${elf2Prediction.toLowerCase()}`;
+        }
+    </script>
+</body>
+</html>

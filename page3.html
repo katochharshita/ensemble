@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santa's Gift Tree - Page 3: Boosting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .intro {
+            text-align: center;
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .elf-section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 3px solid #667eea;
+        }
+
+        .elf-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .elf-header h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .elf-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .tree-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .tree-panel h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .tree {
+            display: inline-block;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            line-height: 1.8;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            width: 100%;
+            text-align: center;
+        }
+
+        .tree-node {
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+            font-size: 1.3em;
+        }
+
+        .tree-branches {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .tree-left, .tree-right {
+            padding: 15px 20px;
+            background: white;
+            border-radius: 5px;
+            min-width: 140px;
+            border: 2px solid;
+        }
+
+        .tree-left {
+            color: #28a745;
+            border-color: #28a745;
+        }
+
+        .tree-right {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .predictions-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .predictions-panel h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .student-prediction {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 15px 0;
+            background: #f5f5f5;
+            border-radius: 10px;
+            border-left: 5px solid #ccc;
+        }
+
+        .student-prediction.correct {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .student-prediction.incorrect {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-name {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .student-age {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .prediction-result {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+
+        .learn-button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .learn-button {
+            padding: 20px 40px;
+            font-size: 1.5em;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+
+        .learn-button:hover {
+            background: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .learn-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .elf-content.hidden {
+            display: none;
+        }
+
+        .boosting-explanation {
+            background: #e3f2fd;
+            border-left: 5px solid #2196F3;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .nav-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎅 Santa's Gift Tree - Boosting 🎄</h1>
+        
+        <div class="intro">
+            <p><strong>Now the Elves decide to learn from each other's mistakes and decide a good gift for these students.</strong></p>
+        </div>
+
+        <!-- Elf 1 Section -->
+        <div class="elf-section" id="elf1-section">
+            <div class="elf-header">
+                <h2>🧝‍♂️ Elf 1</h2>
+            </div>
+
+            <div class="elf-content" id="elf1-content">
+                <div class="tree-panel">
+                    <h3>Elf 1's Decision Tree</h3>
+                    <div class="tree">
+                        <div class="tree-node" id="elf1-tree-node">Age < 11 ?</div>
+                        <div class="tree-branches">
+                            <div class="tree-left">📚 Storybook</div>
+                            <div class="tree-right">🏈 Football</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="predictions-panel">
+                    <h3>Predictions for Students</h3>
+                    <div class="student-prediction incorrect" id="pred1-1">
+                        <div class="student-info">
+                            <div class="student-name">👦 Alex</div>
+                            <div class="student-age">Age: 10</div>
+                        </div>
+                        <div class="prediction-result">🏈 Football ❌</div>
+                    </div>
+                    <div class="student-prediction incorrect" id="pred1-2">
+                        <div class="student-info">
+                            <div class="student-name">👧 Bella</div>
+                            <div class="student-age">Age: 12</div>
+                        </div>
+                        <div class="prediction-result">🏈 Football ❌</div>
+                    </div>
+                    <div class="student-prediction correct" id="pred1-3">
+                        <div class="student-info">
+                            <div class="student-name">👦 Charlie</div>
+                            <div class="student-age">Age: 13</div>
+                        </div>
+                        <div class="prediction-result">🏈 Football ✅</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="learn-button-container">
+                <p style="margin-bottom: 15px; font-size: 1.2em; color: #666;">Elf 1 made 2 mistakes. Let's see if Elf 2 can learn from them!</p>
+            </div>
+        </div>
+
+        <!-- Elf 2 Section -->
+        <div class="elf-section" id="elf2-section">
+            <div class="elf-header">
+                <h2>🧝‍♀️ Elf 2</h2>
+            </div>
+
+            <div class="learn-button-container">
+                <button class="learn-button" id="learn-elf2-btn" onclick="learnFromElf1()">
+                    Learn from Elf 1's Mistakes
+                </button>
+            </div>
+
+            <div class="elf-content hidden" id="elf2-content">
+                <div class="tree-panel">
+                    <h3>Elf 2's Decision Tree</h3>
+                    <div class="tree">
+                        <div class="tree-node" id="elf2-tree-node">Age < 12 ?</div>
+                        <div class="tree-branches">
+                            <div class="tree-left">📚 Storybook</div>
+                            <div class="tree-right">🏈 Football</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="predictions-panel">
+                    <h3>Predictions for Students</h3>
+                    <div class="student-prediction correct" id="pred2-1">
+                        <div class="student-info">
+                            <div class="student-name">👦 Alex</div>
+                            <div class="student-age">Age: 10</div>
+                        </div>
+                        <div class="prediction-result">📚 Storybook ✅</div>
+                    </div>
+                    <div class="student-prediction incorrect" id="pred2-2">
+                        <div class="student-info">
+                            <div class="student-name">👧 Bella</div>
+                            <div class="student-age">Age: 12</div>
+                        </div>
+                        <div class="prediction-result">📚 Storybook ❌</div>
+                    </div>
+                    <div class="student-prediction correct" id="pred2-3">
+                        <div class="student-info">
+                            <div class="student-name">👦 Charlie</div>
+                            <div class="student-age">Age: 13</div>
+                        </div>
+                        <div class="prediction-result">🏈 Football ✅</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="learn-button-container" id="elf2-learn-container" style="display: none;">
+                <p style="margin-bottom: 15px; font-size: 1.2em; color: #666;">Elf 2 learned from Elf 1 and got 2 correct! But still 1 mistake. Let's see if Elf 3 can do even better!</p>
+            </div>
+        </div>
+
+        <!-- Elf 3 Section -->
+        <div class="elf-section" id="elf3-section">
+            <div class="elf-header">
+                <h2>🧝‍♂️ Elf 3</h2>
+            </div>
+
+            <div class="learn-button-container" id="elf3-learn-btn-container" style="display: none;">
+                <button class="learn-button" id="learn-elf3-btn" onclick="learnFromElf2()">
+                    Learn from Elf 2's Mistakes
+                </button>
+            </div>
+
+            <div class="elf-content hidden" id="elf3-content">
+                <div class="tree-panel">
+                    <h3>Elf 3's Decision Tree</h3>
+                    <div class="tree">
+                        <div class="tree-node" id="elf3-tree-node">Age < 11.5 ?</div>
+                        <div class="tree-branches">
+                            <div class="tree-left">📚 Storybook</div>
+                            <div class="tree-right">🏈 Football</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="predictions-panel">
+                    <h3>Predictions for Students</h3>
+                    <div class="student-prediction correct" id="pred3-1">
+                        <div class="student-info">
+                            <div class="student-name">👦 Alex</div>
+                            <div class="student-age">Age: 10</div>
+                        </div>
+                        <div class="prediction-result">📚 Storybook ✅</div>
+                    </div>
+                    <div class="student-prediction correct" id="pred3-2">
+                        <div class="student-info">
+                            <div class="student-name">👧 Bella</div>
+                            <div class="student-age">Age: 12</div>
+                        </div>
+                        <div class="prediction-result">🏈 Football ✅</div>
+                    </div>
+                    <div class="student-prediction correct" id="pred3-3">
+                        <div class="student-info">
+                            <div class="student-name">👦 Charlie</div>
+                            <div class="student-age">Age: 13</div>
+                        </div>
+                        <div class="prediction-result">🏈 Football ✅</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="learn-button-container" id="elf3-success-container" style="display: none;">
+                <div style="background: #d4edda; padding: 30px; border-radius: 15px; border: 3px solid #28a745;">
+                    <h3 style="color: #28a745; font-size: 2em; margin-bottom: 15px;">🎉 Perfect! All Correct! 🎉</h3>
+                    <p style="font-size: 1.3em; color: #155724;">Elf 3 learned from both Elf 1 and Elf 2's mistakes and got all 3 students correct!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="boosting-explanation" id="boosting-explanation" style="display: none;">
+            <p><strong>What just happened?</strong></p>
+            <p>When elves work one after another, each one tries to fix the mistakes made by the elf before, we call it <strong>Boosting</strong>. This helps the team get better with every step. By the time all elves make their predictions, they've improved a lot from the first tree.</p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" onclick="window.location.href='page2.html'">← Back</button>
+        </div>
+    </div>
+
+    <script>
+        // Student data with correct answers
+        const students = [
+            {name: 'Alex', age: 10, correctGift: 'Storybook'},
+            {name: 'Bella', age: 12, correctGift: 'Football'},
+            {name: 'Charlie', age: 13, correctGift: 'Football'}
+        ];
+
+        /**
+         * Get prediction based on age and threshold
+         */
+        function getPrediction(age, threshold) {
+            return age < threshold ? 'Storybook' : 'Football';
+        }
+
+        /**
+         * Learn from Elf 1's mistakes - show Elf 2
+         */
+        function learnFromElf1() {
+            // Hide the button
+            document.getElementById('learn-elf2-btn').style.display = 'none';
+            
+            // Show Elf 2's content
+            document.getElementById('elf2-content').classList.remove('hidden');
+            
+            // Show the message after predictions
+            document.getElementById('elf2-learn-container').style.display = 'block';
+            
+            // Show Elf 3's learn button
+            document.getElementById('elf3-learn-btn-container').style.display = 'block';
+            
+            // Scroll to Elf 2 content smoothly
+            document.getElementById('elf2-content').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        /**
+         * Learn from Elf 2's mistakes - show Elf 3
+         */
+        function learnFromElf2() {
+            // Hide the button
+            document.getElementById('learn-elf3-btn').style.display = 'none';
+            
+            // Show Elf 3's content
+            document.getElementById('elf3-content').classList.remove('hidden');
+            
+            // Show success message
+            document.getElementById('elf3-success-container').style.display = 'block';
+            
+            // Show boosting explanation
+            document.getElementById('boosting-explanation').style.display = 'block';
+            
+            // Scroll to Elf 3 content smoothly
+            document.getElementById('elf3-content').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>

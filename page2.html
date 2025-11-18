@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santa's Gift Tree - Page 2: Bagging & Majority Voting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .intro {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .student-section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 3px solid #667eea;
+        }
+
+        .student-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .student-header h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .student-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+
+        .predictions-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .prediction-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .prediction-panel.main-elf {
+            border-top: 5px solid #2196F3;
+        }
+
+        .prediction-panel.all-elves {
+            border-top: 5px solid #4CAF50;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .panel-header.main-elf {
+            color: #2196F3;
+        }
+
+        .panel-header.all-elves {
+            color: #4CAF50;
+        }
+
+        .main-elf-prediction {
+            text-align: center;
+            padding: 30px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .elf-predictions-list {
+            margin-bottom: 20px;
+        }
+
+        .elf-prediction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+
+        .elf-name {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .elf-prediction {
+            font-size: 1.3em;
+        }
+
+        .majority-vote-box {
+            text-align: center;
+            padding: 25px;
+            background: #c8e6c9;
+            border-radius: 10px;
+            border: 3px solid #4CAF50;
+        }
+
+        .majority-vote-label {
+            font-size: 1.1em;
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .majority-vote-result {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .student-choice-section {
+            background: #fff9c4;
+            border-radius: 15px;
+            padding: 30px;
+            border: 3px solid #ffc107;
+            margin-top: 30px;
+        }
+
+        .student-choice-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .student-choice-header h3 {
+            color: #f57c00;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .choice-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .choice-button {
+            padding: 20px 40px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            background: white;
+            border: 3px solid #ffc107;
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-width: 200px;
+        }
+
+        .choice-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            border-color: #f57c00;
+        }
+
+        .choice-button.selected {
+            background: #ffc107;
+            border-color: #f57c00;
+            transform: scale(1.05);
+        }
+
+        .result-message {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            display: none;
+        }
+
+        .result-message.show {
+            display: block;
+        }
+
+        .result-message.happy {
+            background: #c8e6c9;
+            color: #2e7d32;
+            border: 3px solid #4CAF50;
+        }
+
+        .result-message.not-happy {
+            background: #ffcdd2;
+            color: #c62828;
+            border: 3px solid #f44336;
+        }
+
+        .bias-explanation {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .bias-explanation.show {
+            display: block;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .nav-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎅 Santa's Gift Tree - Bagging 🎄</h1>
+        
+        <div class="intro">
+            <p><strong>Now Santa's main elf and 4 helpers go to different sets of students and make respective trees to make a decision.</strong></p>
+            <p>For some new students, each elf gives an output. Based on the outputs help choose the best gift for the new students!</p>
+        </div>
+
+        <!-- Student 1 -->
+        <div class="student-section" id="student1-section">
+            <div class="student-header">
+                <h2>👦 Student 1: Alex</h2>
+            </div>
+            <div class="student-info">
+                <p><strong>Age: 10</strong></p>
+            </div>
+
+            <div class="predictions-layout">
+                <div class="prediction-panel main-elf">
+                    <div class="panel-header main-elf">
+                        <span>🔍</span>
+                        <span>Main Elf's Prediction</span>
+                    </div>
+                    <div class="main-elf-prediction" id="main-elf-1">
+                        📚 Storybook
+                    </div>
+                </div>
+
+                <div class="prediction-panel all-elves">
+                    <div class="panel-header all-elves">
+                        <span>👥</span>
+                        <span>All 5 Elves' Predictions</span>
+                    </div>
+                    <div class="elf-predictions-list" id="all-elves-1">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <div class="majority-vote-box">
+                        <div class="majority-vote-label">Team Majority Vote</div>
+                        <div class="majority-vote-result" id="majority-1">📚 Storybook</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="student-choice-section">
+                <div class="student-choice-header">
+                    <h3>🤔 What Do You Think?</h3>
+                    <p>You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?</p>
+                </div>
+                <div class="choice-buttons">
+                    <button class="choice-button" onclick="makeChoice(1, 'Storybook')">📚 Storybook</button>
+                    <button class="choice-button" onclick="makeChoice(1, 'Football')">🏈 Football</button>
+                </div>
+                <div class="result-message" id="result-1"></div>
+            </div>
+        </div>
+
+        <!-- Student 2 -->
+        <div class="student-section" id="student2-section">
+            <div class="student-header">
+                <h2>👧 Student 2: Bella</h2>
+            </div>
+            <div class="student-info">
+                <p><strong>Age: 12</strong></p>
+            </div>
+
+            <div class="predictions-layout">
+                <div class="prediction-panel main-elf">
+                    <div class="panel-header main-elf">
+                        <span>🔍</span>
+                        <span>Main Elf's Prediction</span>
+                    </div>
+                    <div class="main-elf-prediction" id="main-elf-2">
+                        📚 Storybook
+                    </div>
+                </div>
+
+                <div class="prediction-panel all-elves">
+                    <div class="panel-header all-elves">
+                        <span>👥</span>
+                        <span>All 5 Elves' Predictions</span>
+                    </div>
+                    <div class="elf-predictions-list" id="all-elves-2">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <div class="majority-vote-box">
+                        <div class="majority-vote-label">Team Majority Vote</div>
+                        <div class="majority-vote-result" id="majority-2">🏈 Football</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="student-choice-section">
+                <div class="student-choice-header">
+                    <h3>🤔 What Do You Think?</h3>
+                    <p>You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?</p>
+                </div>
+                <div class="choice-buttons">
+                    <button class="choice-button" onclick="makeChoice(2, 'Storybook')">📚 Storybook</button>
+                    <button class="choice-button" onclick="makeChoice(2, 'Football')">🏈 Football</button>
+                </div>
+                <div class="result-message" id="result-2"></div>
+                <div class="bias-explanation" id="bagging-explanation-2">
+                    <p><strong>What just happened?</strong></p>
+                    <p>Sometimes one elf's tree gives a wrong gift, but the other elves get it right. When they vote together, their combined answer is often more reliable than using just one tree. Working as a team helps reduce random mistakes. And this is similar to what we call Bagging.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student 3 -->
+        <div class="student-section" id="student3-section">
+            <div class="student-header">
+                <h2>👦 Student 3: Charlie</h2>
+            </div>
+            <div class="student-info">
+                <p><strong>Age: 11</strong></p>
+            </div>
+
+            <div class="predictions-layout">
+                <div class="prediction-panel main-elf">
+                    <div class="panel-header main-elf">
+                        <span>🔍</span>
+                        <span>Main Elf's Prediction</span>
+                    </div>
+                    <div class="main-elf-prediction" id="main-elf-3">
+                        📚 Storybook
+                    </div>
+                </div>
+
+                <div class="prediction-panel all-elves">
+                    <div class="panel-header all-elves">
+                        <span>👥</span>
+                        <span>All 5 Elves' Predictions</span>
+                    </div>
+                    <div class="elf-predictions-list" id="all-elves-3">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <div class="majority-vote-box">
+                        <div class="majority-vote-label">Team Majority Vote</div>
+                        <div class="majority-vote-result" id="majority-3">📚 Storybook</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="student-choice-section">
+                <div class="student-choice-header">
+                    <h3>🤔 What Do You Think?</h3>
+                    <p>You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?</p>
+                </div>
+                <div class="choice-buttons">
+                    <button class="choice-button" onclick="makeChoice(3, 'Storybook')">📚 Storybook</button>
+                    <button class="choice-button" onclick="makeChoice(3, 'Football')">🏈 Football</button>
+                </div>
+                <div class="result-message" id="result-3"></div>
+                <div class="bias-explanation" id="bias-explanation">
+                    <p><strong>What just happened?</strong></p>
+                    <p>Alex and Bella match what the elves had learned, so the vote worked well. But Charlie came from a different school with different gift preferences. All the elves had learned the same rule from similar data, so they all made the same wrong prediction. When every tree shares the same idea, they can all be wrong together.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" onclick="window.location.href='decision-tree-tutorial.html'">← Back</button>
+            <button class="nav-button" onclick="window.location.href='page3.html'">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        // Define the 5 elves and their tree thresholds
+        // Main Elf + 4 Helpers
+        const elves = [
+            {name: 'Main Elf', threshold: 11, isMain: true},
+            {name: 'Helper 1', threshold: 10, isMain: false},
+            {name: 'Helper 2', threshold: 12, isMain: false},
+            {name: 'Helper 3', threshold: 13, isMain: false},
+            {name: 'Helper 4', threshold: 14, isMain: false}
+        ];
+
+        // Test students with their ages and correct answers
+        // Case 1: Alex (age 10) - Main and majority agree, both correct
+        //   Main (11): 10 < 11 → Storybook ✓
+        //   H1 (10): 10 < 10 → Football, H2 (12): 10 < 12 → Storybook, H3 (13): 10 < 13 → Storybook, H4 (14): 10 < 14 → Storybook
+        //   Majority: 4 Storybook, 1 Football → Storybook ✓
+        // Case 2: Bella (age 12) - Main wrong, majority correct
+        //   Main (11): 12 >= 11 → Football, but we want Main wrong, so Main threshold should be > 12
+        //   Let's use different thresholds for Case 2
+        // Case 3: Charlie (age 11) - Main and majority agree, both wrong (bias)
+        //   Main (11): 11 < 11 → Football, but correct is Football... need to adjust
+        
+        // For Case 2, we'll use different thresholds dynamically
+        const students = [
+            {name: 'Alex', age: 10, correctGift: 'Storybook'},  // Case 1: Main and majority agree, both correct
+            {name: 'Bella', age: 12, correctGift: 'Football'},  // Case 2: Main wrong, majority correct
+            {name: 'Charlie', age: 11, correctGift: 'Football'} // Case 3: Main and majority agree, both wrong (bias)
+        ];
+        
+        // Special thresholds for Case 2 (Bella) to show main wrong but majority correct
+        const elvesCase2 = [
+            {name: 'Main Elf', threshold: 13, isMain: true},  // 12 < 13 → Storybook (WRONG, correct is Football)
+            {name: 'Helper 1', threshold: 11, isMain: false}, // 12 >= 11 → Football (CORRECT)
+            {name: 'Helper 2', threshold: 11, isMain: false}, // 12 >= 11 → Football (CORRECT)
+            {name: 'Helper 3', threshold: 11, isMain: false}, // 12 >= 11 → Football (CORRECT)
+            {name: 'Helper 4', threshold: 11, isMain: false}  // 12 >= 11 → Football (CORRECT)
+        ];
+        
+        // Special thresholds for Case 3 (Charlie) to show bias
+        const elvesCase3 = [
+            {name: 'Main Elf', threshold: 12, isMain: true},  // 11 < 12 → Storybook (WRONG, correct is Football)
+            {name: 'Helper 1', threshold: 12, isMain: false}, // 11 < 12 → Storybook (WRONG)
+            {name: 'Helper 2', threshold: 12, isMain: false}, // 11 < 12 → Storybook (WRONG)
+            {name: 'Helper 3', threshold: 12, isMain: false}, // 11 < 12 → Storybook (WRONG)
+            {name: 'Helper 4', threshold: 11, isMain: false}  // 11 < 11 → Football (CORRECT, but minority)
+        ];
+
+        /**
+         * Get prediction from an elf based on age and threshold
+         */
+        function getPrediction(age, threshold) {
+            return age < threshold ? 'Storybook' : 'Football';
+        }
+
+        /**
+         * Get all predictions for a student
+         */
+        function getAllPredictions(studentAge, studentNum) {
+            // Use different elf sets for different cases
+            let elfSet = elves;
+            if (studentNum === 2) {
+                elfSet = elvesCase2;
+            } else if (studentNum === 3) {
+                elfSet = elvesCase3;
+            }
+            
+            return elfSet.map(elf => ({
+                name: elf.name,
+                prediction: getPrediction(studentAge, elf.threshold),
+                isMain: elf.isMain
+            }));
+        }
+
+        /**
+         * Calculate majority vote
+         */
+        function getMajorityVote(predictions) {
+            const storybookCount = predictions.filter(p => p.prediction === 'Storybook').length;
+            const footballCount = predictions.filter(p => p.prediction === 'Football').length;
+            
+            if (storybookCount > footballCount) {
+                return 'Storybook';
+            } else if (footballCount > storybookCount) {
+                return 'Football';
+            } else {
+                // Tie - return first prediction
+                return predictions[0].prediction;
+            }
+        }
+
+        /**
+         * Initialize all students' predictions on page load
+         */
+        function initializePredictions() {
+            students.forEach((student, index) => {
+                const studentNum = index + 1;
+                const predictions = getAllPredictions(student.age, studentNum);
+                const mainElfPred = predictions.find(p => p.isMain);
+                const majority = getMajorityVote(predictions);
+
+                // Display main elf prediction
+                const mainElfDiv = document.getElementById(`main-elf-${studentNum}`);
+                mainElfDiv.textContent = mainElfPred.prediction === 'Storybook' ? '📚 Storybook' : '🏈 Football';
+
+                // Display all elves' predictions
+                const allElvesDiv = document.getElementById(`all-elves-${studentNum}`);
+                allElvesDiv.innerHTML = '';
+                predictions.forEach(elf => {
+                    const item = document.createElement('div');
+                    item.className = 'elf-prediction-item';
+                    item.innerHTML = `
+                        <span class="elf-name">${elf.name}:</span>
+                        <span class="elf-prediction">${elf.prediction === 'Storybook' ? '📚 Storybook' : '🏈 Football'}</span>
+                    `;
+                    allElvesDiv.appendChild(item);
+                });
+
+                // Display majority vote
+                const majorityDiv = document.getElementById(`majority-${studentNum}`);
+                majorityDiv.textContent = majority === 'Storybook' ? '📚 Storybook' : '🏈 Football';
+            });
+        }
+
+        /**
+         * Handle student's choice
+         */
+        function makeChoice(studentNum, chosenGift) {
+            const student = students[studentNum - 1];
+            const predictions = getAllPredictions(student.age, studentNum);
+            const mainElfPred = predictions.find(p => p.isMain);
+            const majority = getMajorityVote(predictions);
+            const resultDiv = document.getElementById(`result-${studentNum}`);
+
+            // Remove previous selections
+            const section = document.getElementById(`student${studentNum}-section`);
+            section.querySelectorAll('.choice-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Mark selected button
+            event.target.classList.add('selected');
+
+            // Determine result based on case
+            let isHappy = false;
+            let message = '';
+
+            if (studentNum === 1) {
+                // Case 1: Main and majority agree, both correct
+                // Student happy if chooses correctly (which matches both)
+                isHappy = chosenGift === student.correctGift;
+                if (isHappy) {
+                    message = '🎉 Great choice! The student is happy! Both the main elf and majority vote were correct!';
+                } else {
+                    message = '😔 The student is not happy. Try choosing what the majority voted for!';
+                }
+            } else if (studentNum === 2) {
+                // Case 2: Main wrong, majority correct
+                // Student happy only if chooses what majority voted
+                isHappy = chosenGift === majority;
+                if (isHappy) {
+                    message = '🎉 Great choice! The student is happy! The majority vote was correct, even though the main elf was wrong!';
+                } else {
+                    message = '😔 The student is not happy. The majority vote was correct - try choosing what the majority voted for!';
+                }
+                
+                // Show bagging explanation
+                document.getElementById('bagging-explanation-2').classList.add('show');
+            } else if (studentNum === 3) {
+                // Case 3: Main and majority agree, but both wrong (bias)
+                // Student NOT happy even if chooses majority
+                isHappy = false;
+                if (chosenGift === majority) {
+                    message = '😔 The student is still not happy, even though you chose what the majority voted for! This shows bias in the model.';
+                } else {
+                    message = 'The Majority did not vote for Football. This is a case where even the majority vote was wrong due to bias!';
+                }
+                
+                // Show bias explanation
+                document.getElementById('bias-explanation').classList.add('show');
+            }
+
+            // Display result
+            resultDiv.textContent = message;
+            resultDiv.className = `result-message show ${isHappy ? 'happy' : 'not-happy'}`;
+        }
+
+        // Initialize on page load
+        initializePredictions();
+    </script>
+</body>
+</html>
