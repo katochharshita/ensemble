@@ -28,6 +28,27 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
 
+        .language-selector {
+            text-align: right;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .language-selector select {
+            padding: 8px 12px;
+            font-size: 1em;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+        }
+
+        .language-selector select:hover {
+            border-color: #5568d3;
+        }
+
         h1 {
             text-align: center;
             color: #764ba2;
@@ -260,10 +281,19 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎅 Santa's Gift Tree - Boosting 🎄</h1>
+        <div class="language-selector">
+            <select id="language-select" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+            </select>
+        </div>
+        
+        <h1 data-translate="title">🎅 Santa's Gift Tree - Boosting 🎄</h1>
         
         <div class="intro">
-            <p><strong>Now the Elves decide to learn from each other's mistakes and decide a good gift for these students.</strong></p>
+            <p><strong data-translate="intro">Now the Elves decide to learn from each other's mistakes and decide a good gift for these students.</strong></p>
         </div>
 
         <!-- Elf 1 Section -->
@@ -274,18 +304,18 @@
 
             <div class="elf-content" id="elf1-content">
                 <div class="tree-panel">
-                    <h3>Elf 1's Decision Tree</h3>
+                    <h3 data-translate="decisionTree">Elf 1's Decision Tree</h3>
                     <div class="tree">
                         <div class="tree-node" id="elf1-tree-node">Age < 11 ?</div>
                         <div class="tree-branches">
-                            <div class="tree-left">📚 Storybook</div>
-                            <div class="tree-right">🏈 Football</div>
+                            <div class="tree-left" data-translate="storybook">📚 Storybook</div>
+                            <div class="tree-right" data-translate="football">🏈 Football</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="predictions-panel">
-                    <h3>Predictions for Students</h3>
+                    <h3 data-translate="predictionsForStudents">Predictions for Students</h3>
                     <div class="student-prediction incorrect" id="pred1-1">
                         <div class="student-info">
                             <div class="student-name">👦 Alex</div>
@@ -311,7 +341,7 @@
             </div>
 
             <div class="learn-button-container">
-                <p style="margin-bottom: 15px; font-size: 1.2em; color: #666;">Elf 1 made 2 mistakes. Let's see if Elf 2 can learn from them!</p>
+                <p style="margin-bottom: 15px; font-size: 1.2em; color: #666;" data-translate="elf1Mistakes">Elf 1 made 2 mistakes. Let's see if Elf 2 can learn from them!</p>
             </div>
         </div>
 
@@ -333,14 +363,14 @@
                     <div class="tree">
                         <div class="tree-node" id="elf2-tree-node">Age < 12 ?</div>
                         <div class="tree-branches">
-                            <div class="tree-left">📚 Storybook</div>
-                            <div class="tree-right">🏈 Football</div>
+                            <div class="tree-left" data-translate="storybook">📚 Storybook</div>
+                            <div class="tree-right" data-translate="football">🏈 Football</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="predictions-panel">
-                    <h3>Predictions for Students</h3>
+                    <h3 data-translate="predictionsForStudents">Predictions for Students</h3>
                     <div class="student-prediction correct" id="pred2-1">
                         <div class="student-info">
                             <div class="student-name">👦 Alex</div>
@@ -366,7 +396,7 @@
             </div>
 
             <div class="learn-button-container" id="elf2-learn-container" style="display: none;">
-                <p style="margin-bottom: 15px; font-size: 1.2em; color: #666;">Elf 2 learned from Elf 1 and got 2 correct! But still 1 mistake. Let's see if Elf 3 can do even better!</p>
+                <p style="margin-bottom: 15px; font-size: 1.2em; color: #666;" data-translate="elf2Progress">Elf 2 learned from Elf 1 and got 2 correct! But still 1 mistake. Let's see if Elf 3 can do even better!</p>
             </div>
         </div>
 
@@ -388,14 +418,14 @@
                     <div class="tree">
                         <div class="tree-node" id="elf3-tree-node">Age < 11.5 ?</div>
                         <div class="tree-branches">
-                            <div class="tree-left">📚 Storybook</div>
-                            <div class="tree-right">🏈 Football</div>
+                            <div class="tree-left" data-translate="storybook">📚 Storybook</div>
+                            <div class="tree-right" data-translate="football">🏈 Football</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="predictions-panel">
-                    <h3>Predictions for Students</h3>
+                    <h3 data-translate="predictionsForStudents">Predictions for Students</h3>
                     <div class="student-prediction correct" id="pred3-1">
                         <div class="student-info">
                             <div class="student-name">👦 Alex</div>
@@ -422,23 +452,153 @@
 
             <div class="learn-button-container" id="elf3-success-container" style="display: none;">
                 <div style="background: #d4edda; padding: 30px; border-radius: 15px; border: 3px solid #28a745;">
-                    <h3 style="color: #28a745; font-size: 2em; margin-bottom: 15px;">🎉 Perfect! All Correct! 🎉</h3>
-                    <p style="font-size: 1.3em; color: #155724;">Elf 3 learned from both Elf 1 and Elf 2's mistakes and got all 3 students correct!</p>
+                    <h3 style="color: #28a745; font-size: 2em; margin-bottom: 15px;" data-translate="allCorrect">🎉 Perfect! All Correct! 🎉</h3>
+                    <p style="font-size: 1.3em; color: #155724;" data-translate="allCorrectDesc">Elf 3 learned from both Elf 1 and Elf 2's mistakes and got all 3 students correct!</p>
                 </div>
             </div>
         </div>
 
         <div class="boosting-explanation" id="boosting-explanation" style="display: none;">
-            <p><strong>What just happened?</strong></p>
-            <p>When elves work one after another, each one tries to fix the mistakes made by the elf before, we call it <strong>Boosting</strong>. This helps the team get better with every step. By the time all elves make their predictions, they've improved a lot from the first tree.</p>
+            <p><strong data-translate="boostingExplanation">What just happened?</strong></p>
+            <p data-translate="boostingText">When elves work one after another, each one tries to fix the mistakes made by the elf before, we call it Boosting. This helps the team get better with every step. By the time all elves make their predictions, they've improved a lot from the first tree.</p>
         </div>
 
         <div class="navigation">
-            <button class="nav-button" onclick="window.location.href='page2.html'">← Back</button>
+            <button class="nav-button" onclick="window.location.href='page2.html'" data-translate="back">← Back</button>
         </div>
     </div>
 
     <script>
+        // Translation system
+        const translations = {
+            en: {
+                title: "🎅 Santa's Gift Tree - Boosting 🎄",
+                intro: "Now the Elves decide to learn from each other's mistakes and decide a good gift for these students.",
+                elf: "Elf",
+                decisionTree: "Decision Tree",
+                predictionsForStudents: "Predictions for Students",
+                learnFromMistakes: "Learn from Elf",
+                mistakes: "'s Mistakes",
+                allCorrect: "🎉 Perfect! All Correct! 🎉",
+                allCorrectDesc: "Elf 3 learned from both Elf 1 and Elf 2's mistakes and got all 3 students correct!",
+                boostingExplanation: "What just happened?",
+                boostingText: "When elves work one after another, each one tries to fix the mistakes made by the elf before, we call it Boosting. This helps the team get better with every step. By the time all elves make their predictions, they've improved a lot from the first tree.",
+                back: "← Back",
+                elf1Mistakes: "Elf 1 made 2 mistakes. Let's see if Elf 2 can learn from them!",
+                elf2Progress: "Elf 2 learned from Elf 1 and got 2 correct! But still 1 mistake. Let's see if Elf 3 can do even better!",
+                storybook: "📚 Storybook",
+                football: "🏈 Football"
+            },
+            de: {
+                title: "🎅 Santas Geschenkbaum - Boosting 🎄",
+                intro: "Jetzt beschließen die Elfen, aus den Fehlern der anderen zu lernen und ein gutes Geschenk für diese Schüler zu entscheiden.",
+                elf: "Elf",
+                decisionTree: "Entscheidungsbaum",
+                predictionsForStudents: "Vorhersagen für Schüler",
+                learnFromMistakes: "Lernen aus den Fehlern von Elf",
+                mistakes: "",
+                allCorrect: "🎉 Perfekt! Alles richtig! 🎉",
+                allCorrectDesc: "Elf 3 lernte aus den Fehlern von Elf 1 und Elf 2 und bekam alle 3 Schüler richtig!",
+                boostingExplanation: "Was ist passiert?",
+                boostingText: "Wenn Elfen nacheinander arbeiten und jeder versucht, die Fehler des vorherigen Elfen zu beheben, nennen wir das Boosting. Dies hilft dem Team, mit jedem Schritt besser zu werden. Wenn alle Elfen ihre Vorhersagen machen, haben sie sich vom ersten Baum stark verbessert.",
+                back: "← Zurück",
+                elf1Mistakes: "Elf 1 hat 2 Fehler gemacht. Mal sehen, ob Elf 2 daraus lernen kann!",
+                elf2Progress: "Elf 2 lernte von Elf 1 und bekam 2 richtig! Aber immer noch 1 Fehler. Mal sehen, ob Elf 3 es noch besser machen kann!",
+                storybook: "📚 Geschichtenbuch",
+                football: "🏈 Fußball"
+            },
+            es: {
+                title: "🎅 El Árbol de Regalos de Santa - Boosting 🎄",
+                intro: "Ahora los Elfos deciden aprender de los errores de los demás y decidir un buen regalo para estos estudiantes.",
+                elf: "Elfo",
+                decisionTree: "Árbol de Decisión",
+                predictionsForStudents: "Predicciones para Estudiantes",
+                learnFromMistakes: "Aprender de los Errores del Elfo",
+                mistakes: "",
+                allCorrect: "🎉 ¡Perfecto! ¡Todo Correcto! 🎉",
+                allCorrectDesc: "¡El Elfo 3 aprendió de los errores del Elfo 1 y del Elfo 2 y acertó los 3 estudiantes!",
+                boostingExplanation: "¿Qué acaba de pasar?",
+                boostingText: "Cuando los elfos trabajan uno tras otro, cada uno intenta corregir los errores cometidos por el elfo anterior, lo llamamos Boosting. Esto ayuda al equipo a mejorar con cada paso. Cuando todos los elfos hacen sus predicciones, han mejorado mucho desde el primer árbol.",
+                back: "← Atrás",
+                elf1Mistakes: "¡El Elfo 1 cometió 2 errores. Veamos si el Elfo 2 puede aprender de ellos!",
+                elf2Progress: "¡El Elfo 2 aprendió del Elfo 1 y acertó 2! Pero todavía 1 error. Veamos si el Elfo 3 puede hacerlo aún mejor!",
+                storybook: "📚 Libro de Cuentos",
+                football: "🏈 Fútbol"
+            },
+            pt: {
+                title: "🎅 Árvore de Presentes do Papai Noel - Boosting 🎄",
+                intro: "Agora os Elfos decidem aprender com os erros uns dos outros e decidir um bom presente para estes alunos.",
+                elf: "Elfo",
+                decisionTree: "Árvore de Decisão",
+                predictionsForStudents: "Predições para Alunos",
+                learnFromMistakes: "Aprender com os Erros do Elfo",
+                mistakes: "",
+                allCorrect: "🎉 Perfeito! Tudo Correto! 🎉",
+                allCorrectDesc: "O Elfo 3 aprendeu com os erros do Elfo 1 e do Elfo 2 e acertou os 3 alunos!",
+                boostingExplanation: "O que acabou de acontecer?",
+                boostingText: "Quando os elfos trabalham um após o outro, cada um tenta corrigir os erros cometidos pelo elfo anterior, chamamos isso de Boosting. Isso ajuda a equipe a melhorar a cada passo. Quando todos os elfos fazem suas predições, eles melhoraram muito desde a primeira árvore.",
+                back: "← Voltar",
+                elf1Mistakes: "O Elfo 1 cometeu 2 erros. Vamos ver se o Elfo 2 pode aprender com eles!",
+                elf2Progress: "O Elfo 2 aprendeu com o Elfo 1 e acertou 2! Mas ainda 1 erro. Vamos ver se o Elfo 3 pode fazer ainda melhor!",
+                storybook: "📚 Livro de Histórias",
+                football: "🏈 Futebol"
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('language') || 'en';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            updateTranslations();
+        }
+
+        function updateTranslations() {
+            const t = translations[currentLanguage];
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (t[key]) {
+                    if (el.tagName === 'INPUT') {
+                        el.value = t[key];
+                    } else if (el.tagName === 'BUTTON') {
+                        el.textContent = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            });
+            
+            // Update learn buttons dynamically
+            const learnElf2Btn = document.getElementById('learn-elf2-btn');
+            const learnElf3Btn = document.getElementById('learn-elf3-btn');
+            if (learnElf2Btn) {
+                learnElf2Btn.textContent = t.learnFromMistakes + ' 1' + t.mistakes;
+            }
+            if (learnElf3Btn) {
+                learnElf3Btn.textContent = t.learnFromMistakes + ' 2' + t.mistakes;
+            }
+            
+            // Update prediction results that contain Storybook or Football
+            document.querySelectorAll('.prediction-result').forEach(el => {
+                let text = el.textContent;
+                if (text.includes('Storybook')) {
+                    text = text.replace('📚 Storybook', t.storybook);
+                    el.textContent = text;
+                } else if (text.includes('Football')) {
+                    text = text.replace('🏈 Football', t.football);
+                    el.textContent = text;
+                }
+            });
+            
+            document.getElementById('language-select').value = currentLanguage;
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('language-select').value = currentLanguage;
+            updateTranslations();
+        });
+
         // Student data with correct answers
         const students = [
             {name: 'Alex', age: 10, correctGift: 'Storybook'},

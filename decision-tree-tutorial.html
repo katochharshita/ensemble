@@ -28,6 +28,27 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
 
+        .language-selector {
+            text-align: right;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .language-selector select {
+            padding: 8px 12px;
+            font-size: 1em;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+        }
+
+        .language-selector select:hover {
+            border-color: #5568d3;
+        }
+
         h1 {
             text-align: center;
             color: #764ba2;
@@ -66,14 +87,16 @@
         .card-wrapper {
             perspective: 1000px;
             width: 100%;
-            height: 500px;
+            min-height: 550px;
+            height: auto;
             margin-bottom: 20px;
         }
 
         .card {
             position: relative;
             width: 100%;
-            height: 100%;
+            min-height: 100%;
+            height: auto;
             transform-style: preserve-3d;
             transition: transform 0.6s;
             cursor: pointer;
@@ -86,15 +109,19 @@
         .card-front, .card-back {
             position: absolute;
             width: 100%;
-            height: 100%;
+            min-height: 100%;
+            height: auto;
             backface-visibility: hidden;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 30px;
+            padding: 20px;
+        }
+        
+        .card-front {
+            justify-content: center;
         }
 
         .card-front {
@@ -106,7 +133,8 @@
             background: white;
             color: #333;
             transform: rotateY(180deg);
-            overflow-y: auto;
+            justify-content: flex-start;
+            overflow: visible;
         }
 
         .class-number {
@@ -164,13 +192,17 @@
 
         /* Feature Selection Buttons */
         .feature-selection {
-            margin: 20px 0;
+            margin: 10px 0;
         }
 
         .feature-selection h3 {
             color: #667eea;
-            margin-bottom: 15px;
+            margin-bottom: 3px;
             text-align: center;
+        }
+        
+        .button-group {
+            margin-top: 0;
         }
 
         .button-group {
@@ -415,12 +447,21 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎅 Santa's Gift Tree 🎄</h1>
+        <div class="language-selector">
+            <select id="language-select" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+            </select>
+        </div>
+        
+        <h1 data-translate="title">🎅 Santa's Gift Tree 🎄</h1>
         
         <div class="question">
-            <p><strong>Santa decides to gift students based on their age.</strong></p>
-            <p>He sends two of his elves into two different classes to make a decision tree.</p>
-            <p>Help the elves! Based on the dataset of students, help choose the deciding criteria for the gifts.</p>
+            <p><strong data-translate="question1">Santa decides to gift students based on their age.</strong></p>
+            <p data-translate="question2">He sends two of his elves into two different classes to make a decision tree.</p>
+            <p data-translate="question3">Help the elves! Based on the dataset of students, help choose the deciding criteria for the gifts.</p>
         </div>
 
         <div class="cards-container">
@@ -430,17 +471,17 @@
                     <div class="card" id="card1" onclick="flipCard(1)">
                         <div class="card-front">
                             <div class="class-number">1</div>
-                            <div class="class-label">Class 1</div>
-                            <div class="click-hint">👆 Click to see the class</div>
+                            <div class="class-label" data-translate="class1">Class 1</div>
+                            <div class="click-hint" data-translate="clickHint">👆 Click to see the class</div>
                         </div>
                         <div class="card-back">
-                            <h2 style="color: #667eea; margin-bottom: 15px;">🧝‍♂️ Elf 1's Class</h2>
+                            <h2 style="color: #667eea; margin-bottom: 15px;" data-translate="elf1Class">🧝‍♂️ Elf 1's Class</h2>
                             <table id="dataset1">
                                 <thead>
                                     <tr>
-                                        <th>Child</th>
-                                        <th>Age</th>
-                                        <th>Gift</th>
+                                        <th data-translate="child">Child</th>
+                                        <th data-translate="age">Age</th>
+                                        <th data-translate="gift">Gift</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -454,11 +495,11 @@
                             </table>
                             
                             <div class="feature-selection">
-                                <h3>Choose the best split:</h3>
+                                <h3 data-translate="chooseSplit">Choose the best split:</h3>
                                 <div class="button-group">
-                                    <button onclick="selectSplit(1, 11); event.stopPropagation();">Age < 11 ?</button>
-                                    <button onclick="selectSplit(1, 12); event.stopPropagation();">Age < 12 ?</button>
-                                    <button onclick="selectSplit(1, 13); event.stopPropagation();">Age < 13 ?</button>
+                                    <button onclick="selectSplit(1, 11); event.stopPropagation();" data-translate="age11">Age < 11 ?</button>
+                                    <button onclick="selectSplit(1, 12); event.stopPropagation();" data-translate="age12">Age < 12 ?</button>
+                                    <button onclick="selectSplit(1, 13); event.stopPropagation();" data-translate="age13">Age < 13 ?</button>
                                 </div>
                             </div>
                         </div>
@@ -466,12 +507,12 @@
                 </div>
                 <!-- Decision Tree for Class 1 -->
                 <div id="tree1" class="tree-container">
-                    <h3 style="color: #667eea; margin-bottom: 15px;">🧝‍♂️ Elf 1's Decision Tree</h3>
+                    <h3 style="color: #667eea; margin-bottom: 15px;" data-translate="elf1Tree">🧝‍♂️ Elf 1's Decision Tree</h3>
                     <div class="tree">
                         <div class="tree-node" id="tree1-node">Age < ? ?</div>
                         <div class="tree-branches">
-                            <div class="tree-left" id="tree1-left">📚 Storybook</div>
-                            <div class="tree-right" id="tree1-right">🏈 Football</div>
+                            <div class="tree-left" id="tree1-left" data-translate="storybook">📚 Storybook</div>
+                            <div class="tree-right" id="tree1-right" data-translate="football">🏈 Football</div>
                         </div>
                     </div>
                 </div>
@@ -483,17 +524,17 @@
                     <div class="card" id="card2" onclick="flipCard(2)">
                         <div class="card-front">
                             <div class="class-number">2</div>
-                            <div class="class-label">Class 2</div>
-                            <div class="click-hint">👆 Click to see the class</div>
+                            <div class="class-label" data-translate="class2">Class 2</div>
+                            <div class="click-hint" data-translate="clickHint">👆 Click to see the class</div>
                         </div>
                         <div class="card-back">
-                            <h2 style="color: #667eea; margin-bottom: 15px;">🧝‍♀️ Elf 2's Class</h2>
+                            <h2 style="color: #667eea; margin-bottom: 15px;" data-translate="elf2Class">🧝‍♀️ Elf 2's Class</h2>
                             <table id="dataset2">
                                 <thead>
                                     <tr>
-                                        <th>Child</th>
-                                        <th>Age</th>
-                                        <th>Gift</th>
+                                        <th data-translate="child">Child</th>
+                                        <th data-translate="age">Age</th>
+                                        <th data-translate="gift">Gift</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -507,11 +548,11 @@
                             </table>
                             
                             <div class="feature-selection">
-                                <h3>Choose the best split:</h3>
+                                <h3 data-translate="chooseSplit">Choose the best split:</h3>
                                 <div class="button-group">
-                                    <button onclick="selectSplit(2, 11); event.stopPropagation();">Age < 11 ?</button>
-                                    <button onclick="selectSplit(2, 12); event.stopPropagation();">Age < 12 ?</button>
-                                    <button onclick="selectSplit(2, 14); event.stopPropagation();">Age < 14 ?</button>
+                                    <button onclick="selectSplit(2, 11); event.stopPropagation();" data-translate="age11">Age < 11 ?</button>
+                                    <button onclick="selectSplit(2, 12); event.stopPropagation();" data-translate="age12">Age < 12 ?</button>
+                                    <button onclick="selectSplit(2, 14); event.stopPropagation();" data-translate="age14">Age < 14 ?</button>
                                 </div>
                             </div>
                         </div>
@@ -519,12 +560,12 @@
                 </div>
                 <!-- Decision Tree for Class 2 -->
                 <div id="tree2" class="tree-container">
-                    <h3 style="color: #667eea; margin-bottom: 15px;">🧝‍♀️ Elf 2's Decision Tree</h3>
+                    <h3 style="color: #667eea; margin-bottom: 15px;" data-translate="elf2Tree">🧝‍♀️ Elf 2's Decision Tree</h3>
                     <div class="tree">
                         <div class="tree-node" id="tree2-node">Age < ? ?</div>
                         <div class="tree-branches">
-                            <div class="tree-left" id="tree2-left">📚 Storybook</div>
-                            <div class="tree-right" id="tree2-right">🏈 Football</div>
+                            <div class="tree-left" id="tree2-left" data-translate="storybook">📚 Storybook</div>
+                            <div class="tree-right" id="tree2-right" data-translate="football">🏈 Football</div>
                         </div>
                     </div>
                 </div>
@@ -534,39 +575,225 @@
         <!-- Snow Section (appears when both trees are created) -->
         <div id="snow-section" class="snow-section">
             <div class="snow-header">
-                <h2>❄️ A New Student Joins! ❄️</h2>
+                <h2 data-translate="newStudent">❄️ A New Student Joins! ❄️</h2>
             </div>
             <div class="snow-info">
-                <p><strong>Snow</strong> just joined the school!</p>
-                <p>Age: <strong>13</strong></p>
-                <p>Help find a gift for her!</p>
+                <p><strong>Snow</strong> <span data-translate="snowJoined">just joined the school!</span></p>
+                <p data-translate="snowAge">Age: <strong>13</strong></p>
+                <p data-translate="helpFindGift">Help find a gift for her!</p>
             </div>
-            <button class="snow-button" onclick="findGiftForSnow()">Find Gift for Snow</button>
+            <button class="snow-button" onclick="findGiftForSnow()" data-translate="findGift">Find Gift for Snow</button>
             
             <div id="snow-predictions" style="display: none;">
                 <div class="predictions-container">
                     <div class="prediction-box">
-                        <h3>🧝‍♂️ Elf 1's Prediction</h3>
+                        <h3 data-translate="elf1Pred">🧝‍♂️ Elf 1's Prediction</h3>
                         <div id="elf1-snow-pred" class="prediction-result"></div>
                     </div>
                     <div class="prediction-box">
-                        <h3>🧝‍♀️ Elf 2's Prediction</h3>
+                        <h3 data-translate="elf2Pred">🧝‍♀️ Elf 2's Prediction</h3>
                         <div id="elf2-snow-pred" class="prediction-result"></div>
                     </div>
                 </div>
                 <div class="variance-insight">
-                    <p><strong>What just happened?</strong></p>
-                    <p>The two elves made different trees because they trained on slightly different groups of children. Even small changes in data can lead to different rules. This shows that decision trees can change easily depending on the examples they see.</p>
+                    <p><strong data-translate="varianceTitle">What just happened?</strong></p>
+                    <p data-translate="varianceText">The two elves made different trees because they trained on slightly different groups of children. Even small changes in data can lead to different rules. This shows that decision trees can change easily depending on the examples they see.</p>
                 </div>
             </div>
         </div>
 
         <div class="navigation">
-            <button class="nav-button" onclick="window.location.href='page2.html'">Next →</button>
+            <button class="nav-button" onclick="window.location.href='page2.html'" data-translate="next">Next →</button>
         </div>
     </div>
 
     <script>
+        // Translation system
+        const translations = {
+            en: {
+                title: "🎅 Santa's Gift Tree 🎄",
+                question1: "Santa decides to gift students based on their age.",
+                question2: "He sends two of his elves into two different classes to make a decision tree.",
+                question3: "Help the elves! Based on the dataset of students, help choose the deciding criteria for the gifts.",
+                class1: "Class 1",
+                class2: "Class 2",
+                clickHint: "👆 Click to see the class",
+                elf1Class: "🧝‍♂️ Elf 1's Class",
+                elf2Class: "🧝‍♀️ Elf 2's Class",
+                child: "Child",
+                age: "Age",
+                gift: "Gift",
+                chooseSplit: "Choose the best split:",
+                age11: "Age < 11 ?",
+                age12: "Age < 12 ?",
+                age13: "Age < 13 ?",
+                age14: "Age < 14 ?",
+                elf1Tree: "🧝‍♂️ Elf 1's Decision Tree",
+                elf2Tree: "🧝‍♀️ Elf 2's Decision Tree",
+                newStudent: "❄️ A New Student Joins! ❄️",
+                snowJoined: "Snow just joined the school!",
+                snowAge: "Age: 13",
+                findGift: "Find Gift for Snow",
+                helpFindGift: "Help find a gift for her!",
+                elf1Pred: "🧝‍♂️ Elf 1's Prediction",
+                elf2Pred: "🧝‍♀️ Elf 2's Prediction",
+                varianceTitle: "What just happened?",
+                varianceText: "The two elves made different trees because they trained on slightly different groups of children. Even small changes in data can lead to different rules. This shows that decision trees can change easily depending on the examples they see.",
+                next: "Next →",
+                alertCreateTrees: "Please create both decision trees first!",
+                storybook: "📚 Storybook",
+                football: "🏈 Football"
+            },
+            de: {
+                title: "🎅 Santas Geschenkbaum 🎄",
+                question1: "Santa entscheidet, Schüler basierend auf ihrem Alter zu beschenken.",
+                question2: "Er schickt zwei seiner Elfen in zwei verschiedene Klassen, um einen Entscheidungsbaum zu erstellen.",
+                question3: "Helfen Sie den Elfen! Basierend auf dem Datensatz der Schüler helfen Sie bei der Auswahl der Entscheidungskriterien für die Geschenke.",
+                class1: "Klasse 1",
+                class2: "Klasse 2",
+                clickHint: "👆 Klicken Sie, um die Klasse zu sehen",
+                elf1Class: "🧝‍♂️ Elf 1's Klasse",
+                elf2Class: "🧝‍♀️ Elf 2's Klasse",
+                child: "Kind",
+                age: "Alter",
+                gift: "Geschenk",
+                chooseSplit: "Wählen Sie die beste Aufteilung:",
+                age11: "Alter < 11 ?",
+                age12: "Alter < 12 ?",
+                age13: "Alter < 13 ?",
+                age14: "Alter < 14 ?",
+                elf1Tree: "🧝‍♂️ Elf 1's Entscheidungsbaum",
+                elf2Tree: "🧝‍♀️ Elf 2's Entscheidungsbaum",
+                newStudent: "❄️ Ein neuer Schüler kommt! ❄️",
+                snowJoined: "Snow ist gerade zur Schule gekommen!",
+                snowAge: "Alter: 13",
+                findGift: "Geschenk für Snow finden",
+                helpFindGift: "Helfen Sie, ein Geschenk für sie zu finden!",
+                elf1Pred: "🧝‍♂️ Elf 1's Vorhersage",
+                elf2Pred: "🧝‍♀️ Elf 2's Vorhersage",
+                varianceTitle: "Was ist passiert?",
+                varianceText: "Die beiden Elfen haben unterschiedliche Bäume erstellt, weil sie auf leicht unterschiedlichen Kindergruppen trainiert wurden. Selbst kleine Änderungen in den Daten können zu unterschiedlichen Regeln führen. Dies zeigt, dass Entscheidungsbäume sich leicht ändern können, abhängig von den Beispielen, die sie sehen.",
+                next: "Weiter →",
+                alertCreateTrees: "Bitte erstellen Sie zuerst beide Entscheidungsbäume!",
+                storybook: "📚 Geschichtenbuch",
+                football: "🏈 Fußball"
+            },
+            es: {
+                title: "🎅 El Árbol de Regalos de Santa 🎄",
+                question1: "Santa decide regalar a los estudiantes según su edad.",
+                question2: "Envía dos de sus elfos a dos clases diferentes para hacer un árbol de decisión.",
+                question3: "¡Ayuda a los elfos! Basándote en el conjunto de datos de estudiantes, ayuda a elegir los criterios de decisión para los regalos.",
+                class1: "Clase 1",
+                class2: "Clase 2",
+                clickHint: "👆 Haz clic para ver la clase",
+                elf1Class: "🧝‍♂️ Clase del Elfo 1",
+                elf2Class: "🧝‍♀️ Clase del Elfo 2",
+                child: "Niño",
+                age: "Edad",
+                gift: "Regalo",
+                chooseSplit: "Elige la mejor división:",
+                age11: "¿Edad < 11 ?",
+                age12: "¿Edad < 12 ?",
+                age13: "¿Edad < 13 ?",
+                age14: "¿Edad < 14 ?",
+                elf1Tree: "🧝‍♂️ Árbol de Decisión del Elfo 1",
+                elf2Tree: "🧝‍♀️ Árbol de Decisión del Elfo 2",
+                newStudent: "❄️ ¡Un Nuevo Estudiante se Une! ❄️",
+                snowJoined: "¡Snow acaba de unirse a la escuela!",
+                snowAge: "Edad: 13",
+                findGift: "Encontrar Regalo para Snow",
+                helpFindGift: "¡Ayuda a encontrar un regalo para ella!",
+                elf1Pred: "🧝‍♂️ Predicción del Elfo 1",
+                elf2Pred: "🧝‍♀️ Predicción del Elfo 2",
+                varianceTitle: "¿Qué acaba de pasar?",
+                varianceText: "Los dos elfos hicieron árboles diferentes porque entrenaron en grupos de niños ligeramente diferentes. Incluso pequeños cambios en los datos pueden llevar a reglas diferentes. Esto muestra que los árboles de decisión pueden cambiar fácilmente dependiendo de los ejemplos que ven.",
+                next: "Siguiente →",
+                alertCreateTrees: "¡Por favor crea ambos árboles de decisión primero!",
+                storybook: "📚 Libro de Cuentos",
+                football: "🏈 Fútbol"
+            },
+            pt: {
+                title: "🎅 Árvore de Presentes do Papai Noel 🎄",
+                question1: "O Papai Noel decide presentear os alunos com base na idade deles.",
+                question2: "Ele envia dois de seus elfos para duas classes diferentes para fazer uma árvore de decisão.",
+                question3: "Ajude os elfos! Com base no conjunto de dados dos alunos, ajude a escolher os critérios de decisão para os presentes.",
+                class1: "Classe 1",
+                class2: "Classe 2",
+                clickHint: "👆 Clique para ver a classe",
+                elf1Class: "🧝‍♂️ Classe do Elfo 1",
+                elf2Class: "🧝‍♀️ Classe do Elfo 2",
+                child: "Criança",
+                age: "Idade",
+                gift: "Presente",
+                chooseSplit: "Escolha a melhor divisão:",
+                age11: "Idade < 11 ?",
+                age12: "Idade < 12 ?",
+                age13: "Idade < 13 ?",
+                age14: "Idade < 14 ?",
+                elf1Tree: "🧝‍♂️ Árvore de Decisão do Elfo 1",
+                elf2Tree: "🧝‍♀️ Árvore de Decisão do Elfo 2",
+                newStudent: "❄️ Um Novo Aluno se Junta! ❄️",
+                snowJoined: "Snow acabou de se juntar à escola!",
+                snowAge: "Idade: 13",
+                findGift: "Encontrar Presente para Snow",
+                helpFindGift: "Ajude a encontrar um presente para ela!",
+                elf1Pred: "🧝‍♂️ Predição do Elfo 1",
+                elf2Pred: "🧝‍♀️ Predição do Elfo 2",
+                varianceTitle: "O que acabou de acontecer?",
+                varianceText: "Os dois elfos fizeram árvores diferentes porque treinaram em grupos de crianças ligeiramente diferentes. Mesmo pequenas mudanças nos dados podem levar a regras diferentes. Isso mostra que as árvores de decisão podem mudar facilmente dependendo dos exemplos que veem.",
+                next: "Próximo →",
+                alertCreateTrees: "Por favor, crie ambas as árvores de decisão primeiro!",
+                storybook: "📚 Livro de Histórias",
+                football: "🏈 Futebol"
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('language') || 'en';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            updateTranslations();
+        }
+
+        function updateTranslations() {
+            const t = translations[currentLanguage];
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (t[key]) {
+                    if (el.tagName === 'INPUT') {
+                        el.value = t[key];
+                    } else if (el.tagName === 'BUTTON') {
+                        el.textContent = t[key];
+                    } else if (el.tagName === 'SPAN' && el.parentElement.tagName === 'P' && el.parentElement.querySelector('strong')) {
+                        // Handle spans inside paragraphs with strong tags (like Snow section)
+                        el.textContent = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            });
+            
+            // Update select dropdown
+            document.getElementById('language-select').value = currentLanguage;
+            
+            // Update tree nodes if they're already displayed
+            if (tree1Threshold !== null) {
+                const ageText = t.age || 'Age';
+                document.getElementById('tree1-node').textContent = `${ageText} < ${tree1Threshold} ?`;
+            }
+            if (tree2Threshold !== null) {
+                const ageText = t.age || 'Age';
+                document.getElementById('tree2-node').textContent = `${ageText} < ${tree2Threshold} ?`;
+            }
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('language-select').value = currentLanguage;
+            updateTranslations();
+        });
+
         // Dataset 1: Training Set 1 - clear split at Age < 11
         const dataset1 = [
             {name: 'Asha', age: 8, gift: 'Storybook'},
@@ -597,7 +824,22 @@
          */
         function flipCard(cardNum) {
             const card = document.getElementById(`card${cardNum}`);
+            const cardWrapper = card.closest('.card-wrapper');
+            const cardBack = card.querySelector('.card-back');
+            
             card.classList.toggle('flipped');
+            
+            // Adjust card wrapper height based on card-back content when flipped
+            if (card.classList.contains('flipped')) {
+                // Wait for transition to start, then measure
+                setTimeout(() => {
+                    const backHeight = cardBack.scrollHeight;
+                    cardWrapper.style.height = Math.max(550, backHeight + 40) + 'px';
+                }, 50);
+            } else {
+                // Reset to min-height when flipped back
+                cardWrapper.style.height = '';
+            }
         }
 
         /**
@@ -641,7 +883,9 @@
             treeContainer.classList.add('show');
             
             // Update tree display
-            document.getElementById(`${treeId}-node`).textContent = `Age < ${threshold} ?`;
+            const t = translations[currentLanguage];
+            const ageText = t.age || 'Age';
+            document.getElementById(`${treeId}-node`).textContent = `${ageText} < ${threshold} ?`;
             
             // Evaluate predictions and color table rows
             const table = document.getElementById(tableId);
@@ -668,8 +912,9 @@
          * Find gift for Snow using both trees
          */
         function findGiftForSnow() {
+            const t = translations[currentLanguage];
             if (tree1Threshold === null || tree2Threshold === null) {
-                alert('Please create both decision trees first!');
+                alert(t.alertCreateTrees);
                 return;
             }
 
@@ -685,10 +930,10 @@
             const elf1Div = document.getElementById('elf1-snow-pred');
             const elf2Div = document.getElementById('elf2-snow-pred');
 
-            elf1Div.textContent = elf1Prediction === 'Storybook' ? '📚 Storybook' : '🏈 Football';
+            elf1Div.textContent = elf1Prediction === 'Storybook' ? t.storybook : t.football;
             elf1Div.className = `prediction-result ${elf1Prediction.toLowerCase()}`;
 
-            elf2Div.textContent = elf2Prediction === 'Storybook' ? '📚 Storybook' : '🏈 Football';
+            elf2Div.textContent = elf2Prediction === 'Storybook' ? t.storybook : t.football;
             elf2Div.className = `prediction-result ${elf2Prediction.toLowerCase()}`;
         }
     </script>

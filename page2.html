@@ -28,6 +28,27 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
 
+        .language-selector {
+            text-align: right;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .language-selector select {
+            padding: 8px 12px;
+            font-size: 1em;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+        }
+
+        .language-selector select:hover {
+            border-color: #5568d3;
+        }
+
         h1 {
             text-align: center;
             color: #764ba2;
@@ -286,11 +307,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎅 Santa's Gift Tree - Bagging 🎄</h1>
+        <div class="language-selector">
+            <select id="language-select" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="es">Español</option>
+                <option value="pt">Português</option>
+            </select>
+        </div>
+        
+        <h1 data-translate="title">🎅 Santa's Gift Tree - Bagging 🎄</h1>
         
         <div class="intro">
-            <p><strong>Now Santa's main elf and 4 helpers go to different sets of students and make respective trees to make a decision.</strong></p>
-            <p>For some new students, each elf gives an output. Based on the outputs help choose the best gift for the new students!</p>
+            <p><strong data-translate="intro1">Now Santa's main elf and 4 helpers go to different sets of students and make respective trees to make a decision.</strong></p>
+            <p data-translate="intro2">For some new students, each elf gives an output. Based on the outputs help choose the best gift for the new students!</p>
         </div>
 
         <!-- Student 1 -->
@@ -306,7 +336,7 @@
                 <div class="prediction-panel main-elf">
                     <div class="panel-header main-elf">
                         <span>🔍</span>
-                        <span>Main Elf's Prediction</span>
+                        <span data-translate="mainElfPred">Main Elf's Prediction</span>
                     </div>
                     <div class="main-elf-prediction" id="main-elf-1">
                         📚 Storybook
@@ -316,13 +346,13 @@
                 <div class="prediction-panel all-elves">
                     <div class="panel-header all-elves">
                         <span>👥</span>
-                        <span>All 5 Elves' Predictions</span>
+                        <span data-translate="allElvesPred">All 5 Elves' Predictions</span>
                     </div>
                     <div class="elf-predictions-list" id="all-elves-1">
                         <!-- Will be populated by JavaScript -->
                     </div>
                     <div class="majority-vote-box">
-                        <div class="majority-vote-label">Team Majority Vote</div>
+                        <div class="majority-vote-label" data-translate="teamMajority">Team Majority Vote</div>
                         <div class="majority-vote-result" id="majority-1">📚 Storybook</div>
                     </div>
                 </div>
@@ -330,12 +360,12 @@
 
             <div class="student-choice-section">
                 <div class="student-choice-header">
-                    <h3>🤔 What Do You Think?</h3>
-                    <p>You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?</p>
+                    <h3 data-translate="whatDoYouThink">🤔 What Do You Think?</h3>
+                    <p data-translate="whatDoYouThinkDesc">You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?</p>
                 </div>
                 <div class="choice-buttons">
-                    <button class="choice-button" onclick="makeChoice(1, 'Storybook')">📚 Storybook</button>
-                    <button class="choice-button" onclick="makeChoice(1, 'Football')">🏈 Football</button>
+                    <button class="choice-button" onclick="makeChoice(1, 'Storybook')" data-translate="storybook">📚 Storybook</button>
+                    <button class="choice-button" onclick="makeChoice(1, 'Football')" data-translate="football">🏈 Football</button>
                 </div>
                 <div class="result-message" id="result-1"></div>
             </div>
@@ -354,7 +384,7 @@
                 <div class="prediction-panel main-elf">
                     <div class="panel-header main-elf">
                         <span>🔍</span>
-                        <span>Main Elf's Prediction</span>
+                        <span data-translate="mainElfPred">Main Elf's Prediction</span>
                     </div>
                     <div class="main-elf-prediction" id="main-elf-2">
                         📚 Storybook
@@ -364,13 +394,13 @@
                 <div class="prediction-panel all-elves">
                     <div class="panel-header all-elves">
                         <span>👥</span>
-                        <span>All 5 Elves' Predictions</span>
+                        <span data-translate="allElvesPred">All 5 Elves' Predictions</span>
                     </div>
                     <div class="elf-predictions-list" id="all-elves-2">
                         <!-- Will be populated by JavaScript -->
                     </div>
                     <div class="majority-vote-box">
-                        <div class="majority-vote-label">Team Majority Vote</div>
+                        <div class="majority-vote-label" data-translate="teamMajority">Team Majority Vote</div>
                         <div class="majority-vote-result" id="majority-2">🏈 Football</div>
                     </div>
                 </div>
@@ -378,17 +408,17 @@
 
             <div class="student-choice-section">
                 <div class="student-choice-header">
-                    <h3>🤔 What Do You Think?</h3>
-                    <p>You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?</p>
+                    <h3 data-translate="whatDoYouThink">🤔 What Do You Think?</h3>
+                    <p data-translate="whatDoYouThinkDesc">You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?</p>
                 </div>
                 <div class="choice-buttons">
-                    <button class="choice-button" onclick="makeChoice(2, 'Storybook')">📚 Storybook</button>
-                    <button class="choice-button" onclick="makeChoice(2, 'Football')">🏈 Football</button>
+                    <button class="choice-button" onclick="makeChoice(2, 'Storybook')" data-translate="storybook">📚 Storybook</button>
+                    <button class="choice-button" onclick="makeChoice(2, 'Football')" data-translate="football">🏈 Football</button>
                 </div>
                 <div class="result-message" id="result-2"></div>
                 <div class="bias-explanation" id="bagging-explanation-2">
-                    <p><strong>What just happened?</strong></p>
-                    <p>Sometimes one elf's tree gives a wrong gift, but the other elves get it right. When they vote together, their combined answer is often more reliable than using just one tree. Working as a team helps reduce random mistakes. And this is similar to what we call Bagging.</p>
+                    <p><strong data-translate="baggingExplanation">What just happened?</strong></p>
+                    <p data-translate="baggingText">Sometimes one elf's tree gives a wrong gift, but the other elves get it right. When they vote together, their combined answer is often more reliable than using just one tree. Working as a team helps reduce random mistakes.</p>
                 </div>
             </div>
         </div>
@@ -406,7 +436,7 @@
                 <div class="prediction-panel main-elf">
                     <div class="panel-header main-elf">
                         <span>🔍</span>
-                        <span>Main Elf's Prediction</span>
+                        <span data-translate="mainElfPred">Main Elf's Prediction</span>
                     </div>
                     <div class="main-elf-prediction" id="main-elf-3">
                         📚 Storybook
@@ -416,13 +446,13 @@
                 <div class="prediction-panel all-elves">
                     <div class="panel-header all-elves">
                         <span>👥</span>
-                        <span>All 5 Elves' Predictions</span>
+                        <span data-translate="allElvesPred">All 5 Elves' Predictions</span>
                     </div>
                     <div class="elf-predictions-list" id="all-elves-3">
                         <!-- Will be populated by JavaScript -->
                     </div>
                     <div class="majority-vote-box">
-                        <div class="majority-vote-label">Team Majority Vote</div>
+                        <div class="majority-vote-label" data-translate="teamMajority">Team Majority Vote</div>
                         <div class="majority-vote-result" id="majority-3">📚 Storybook</div>
                     </div>
                 </div>
@@ -430,28 +460,165 @@
 
             <div class="student-choice-section">
                 <div class="student-choice-header">
-                    <h3>🤔 What Do You Think?</h3>
-                    <p>You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?</p>
+                    <h3 data-translate="whatDoYouThink">🤔 What Do You Think?</h3>
+                    <p data-translate="whatDoYouThinkDesc">You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?</p>
                 </div>
                 <div class="choice-buttons">
-                    <button class="choice-button" onclick="makeChoice(3, 'Storybook')">📚 Storybook</button>
-                    <button class="choice-button" onclick="makeChoice(3, 'Football')">🏈 Football</button>
+                    <button class="choice-button" onclick="makeChoice(3, 'Storybook')" data-translate="storybook">📚 Storybook</button>
+                    <button class="choice-button" onclick="makeChoice(3, 'Football')" data-translate="football">🏈 Football</button>
                 </div>
                 <div class="result-message" id="result-3"></div>
                 <div class="bias-explanation" id="bias-explanation">
-                    <p><strong>What just happened?</strong></p>
-                    <p>Alex and Bella match what the elves had learned, so the vote worked well. But Charlie came from a different school with different gift preferences. All the elves had learned the same rule from similar data, so they all made the same wrong prediction. When every tree shares the same idea, they can all be wrong together.</p>
+                    <p><strong data-translate="biasExplanation">What just happened?</strong></p>
+                    <p data-translate="biasText">Alex and Bella match what the elves had learned, so the vote worked well. But Charlie came from a different school with different gift preferences. All the elves had learned the same rule from similar data, so they all made the same wrong prediction. When every tree shares the same idea, they can all be wrong together.</p>
                 </div>
             </div>
         </div>
 
         <div class="navigation">
-            <button class="nav-button" onclick="window.location.href='decision-tree-tutorial.html'">← Back</button>
-            <button class="nav-button" onclick="window.location.href='page3.html'">Next →</button>
+            <button class="nav-button" onclick="window.location.href='decision-tree-tutorial.html'" data-translate="back">← Back</button>
+            <button class="nav-button" onclick="window.location.href='page3.html'" data-translate="next">Next →</button>
         </div>
     </div>
 
     <script>
+        // Translation system
+        const translations = {
+            en: {
+                title: "🎅 Santa's Gift Tree - Bagging 🎄",
+                intro1: "Now Santa's main elf and 4 helpers go to different sets of students and make respective trees to make a decision.",
+                intro2: "For some new students, each elf gives an output. Based on the outputs help choose the best gift for the new students!",
+                student: "Student",
+                mainElfPred: "Main Elf's Prediction",
+                allElvesPred: "All 5 Elves' Predictions",
+                teamMajority: "Team Majority Vote",
+                whatDoYouThink: "🤔 What Do You Think?",
+                whatDoYouThinkDesc: "You've seen what the main elf predicted and what all 5 elves predicted. What do you think the gift should be?",
+                storybook: "📚 Storybook",
+                football: "🏈 Football",
+                baggingExplanation: "What just happened?",
+                baggingText: "Sometimes one elf's tree gives a wrong gift, but the other elves get it right. When they vote together, their combined answer is often more reliable than using just one tree. Working as a team helps reduce random mistakes.",
+                biasExplanation: "What just happened?",
+                biasText: "Alex and Bella match what the elves had learned, so the vote worked well. But Charlie came from a different school with different gift preferences. All the elves had learned the same rule from similar data, so they all made the same wrong prediction. When every tree shares the same idea, they can all be wrong together.",
+                back: "← Back",
+                next: "Next →",
+                student1Happy: "🎉 Great choice! The student is happy! Both the main elf and majority vote were correct!",
+                student1NotHappy: "😔 The student is not happy. Try choosing what the majority voted for!",
+                student2Happy: "🎉 Great choice! The student is happy! The majority vote was correct, even though the main elf was wrong!",
+                student2NotHappy: "😔 The student is not happy. The majority vote was correct - try choosing what the majority voted for!",
+                student3NotHappyMajority: "😔 The student is still not happy, even though you chose what the majority voted for! This shows bias in the model.",
+                student3NotHappy: "The Majority did not vote for Football. This is a case where even the majority vote was wrong due to bias!"
+            },
+            de: {
+                title: "🎅 Santas Geschenkbaum - Bagging 🎄",
+                intro1: "Jetzt gehen Santas Hauptelf und 4 Helfer zu verschiedenen Schülergruppen und erstellen jeweils Bäume, um eine Entscheidung zu treffen.",
+                intro2: "Für einige neue Schüler gibt jeder Elf eine Ausgabe. Basierend auf den Ausgaben helfen Sie, das beste Geschenk für die neuen Schüler zu wählen!",
+                student: "Schüler",
+                mainElfPred: "Vorhersage des Hauptelfen",
+                allElvesPred: "Vorhersagen aller 5 Elfen",
+                teamMajority: "Mehrheitsentscheidung des Teams",
+                whatDoYouThink: "🤔 Was denkst du?",
+                whatDoYouThinkDesc: "Du hast gesehen, was der Hauptelf vorhergesagt hat und was alle 5 Elfen vorhergesagt haben. Was denkst du, sollte das Geschenk sein?",
+                storybook: "📚 Geschichtenbuch",
+                football: "🏈 Fußball",
+                baggingExplanation: "Was ist passiert?",
+                baggingText: "Manchmal gibt der Baum eines Elfen ein falsches Geschenk, aber die anderen Elfen haben recht. Wenn sie zusammen abstimmen, ist ihre kombinierte Antwort oft zuverlässiger als die Verwendung nur eines Baumes. Teamarbeit hilft, zufällige Fehler zu reduzieren.",
+                biasExplanation: "Was ist passiert?",
+                biasText: "Alex und Bella passen zu dem, was die Elfen gelernt hatten, daher funktionierte die Abstimmung gut. Aber Charlie kam aus einer anderen Schule mit unterschiedlichen Geschenkpräferenzen. Alle Elfen hatten die gleiche Regel aus ähnlichen Daten gelernt, daher machten sie alle die gleiche falsche Vorhersage. Wenn jeder Baum die gleiche Idee teilt, können sie alle zusammen falsch liegen.",
+                back: "← Zurück",
+                next: "Weiter →",
+                student1Happy: "🎉 Große Wahl! Der Schüler ist glücklich! Sowohl der Hauptelf als auch die Mehrheitsabstimmung waren richtig!",
+                student1NotHappy: "😔 Der Schüler ist nicht glücklich. Versuchen Sie, das zu wählen, wofür die Mehrheit gestimmt hat!",
+                student2Happy: "🎉 Große Wahl! Der Schüler ist glücklich! Die Mehrheitsabstimmung war richtig, obwohl der Hauptelf falsch lag!",
+                student2NotHappy: "😔 Der Schüler ist nicht glücklich. Die Mehrheitsabstimmung war richtig - versuchen Sie, das zu wählen, wofür die Mehrheit gestimmt hat!",
+                student3NotHappyMajority: "😔 Der Schüler ist immer noch nicht glücklich, obwohl Sie das gewählt haben, wofür die Mehrheit gestimmt hat! Dies zeigt Voreingenommenheit im Modell.",
+                student3NotHappy: "Die Mehrheit hat nicht für Fußball gestimmt. Dies ist ein Fall, in dem sogar die Mehrheitsabstimmung aufgrund von Voreingenommenheit falsch war!"
+            },
+            es: {
+                title: "🎅 El Árbol de Regalos de Santa - Bagging 🎄",
+                intro1: "Ahora el elfo principal de Santa y 4 ayudantes van a diferentes grupos de estudiantes y hacen árboles respectivos para tomar una decisión.",
+                intro2: "Para algunos estudiantes nuevos, cada elfo da una salida. ¡Basándote en las salidas, ayuda a elegir el mejor regalo para los nuevos estudiantes!",
+                student: "Estudiante",
+                mainElfPred: "Predicción del Elfo Principal",
+                allElvesPred: "Predicciones de los 5 Elfos",
+                teamMajority: "Voto Mayoritario del Equipo",
+                whatDoYouThink: "🤔 ¿Qué piensas?",
+                whatDoYouThinkDesc: "Has visto lo que predijo el elfo principal y lo que predijeron los 5 elfos. ¿Qué crees que debería ser el regalo?",
+                storybook: "📚 Libro de Cuentos",
+                football: "🏈 Fútbol",
+                baggingExplanation: "¿Qué acaba de pasar?",
+                baggingText: "A veces el árbol de un elfo da un regalo equivocado, pero los otros elfos lo hacen bien. Cuando votan juntos, su respuesta combinada suele ser más confiable que usar solo un árbol. Trabajar en equipo ayuda a reducir errores aleatorios.",
+                biasExplanation: "¿Qué acaba de pasar?",
+                biasText: "Alex y Bella coinciden con lo que los elfos habían aprendido, por lo que la votación funcionó bien. Pero Charlie vino de una escuela diferente con diferentes preferencias de regalos. Todos los elfos habían aprendido la misma regla de datos similares, por lo que todos hicieron la misma predicción incorrecta. Cuando cada árbol comparte la misma idea, todos pueden estar equivocados juntos.",
+                back: "← Atrás",
+                next: "Siguiente →",
+                student1Happy: "🎉 ¡Excelente elección! ¡El estudiante está feliz! ¡Tanto el elfo principal como el voto mayoritario fueron correctos!",
+                student1NotHappy: "😔 El estudiante no está feliz. ¡Intenta elegir lo que votó la mayoría!",
+                student2Happy: "🎉 ¡Excelente elección! ¡El estudiante está feliz! ¡El voto mayoritario fue correcto, aunque el elfo principal estaba equivocado!",
+                student2NotHappy: "😔 El estudiante no está feliz. El voto mayoritario fue correcto - ¡intenta elegir lo que votó la mayoría!",
+                student3NotHappyMajority: "😔 El estudiante todavía no está feliz, ¡aunque elegiste lo que votó la mayoría! Esto muestra sesgo en el modelo.",
+                student3NotHappy: "La mayoría no votó por Fútbol. ¡Este es un caso donde incluso el voto mayoritario estuvo equivocado debido al sesgo!"
+            },
+            pt: {
+                title: "🎅 Árvore de Presentes do Papai Noel - Bagging 🎄",
+                intro1: "Agora o elfo principal do Papai Noel e 4 ajudantes vão para diferentes grupos de alunos e fazem árvores respectivas para tomar uma decisão.",
+                intro2: "Para alguns alunos novos, cada elfo dá uma saída. Com base nas saídas, ajude a escolher o melhor presente para os novos alunos!",
+                student: "Aluno",
+                mainElfPred: "Predição do Elfo Principal",
+                allElvesPred: "Predições dos 5 Elfos",
+                teamMajority: "Voto Majoritário da Equipe",
+                whatDoYouThink: "🤔 O que você acha?",
+                whatDoYouThinkDesc: "Você viu o que o elfo principal previu e o que os 5 elfos previram. O que você acha que o presente deveria ser?",
+                storybook: "📚 Livro de Histórias",
+                football: "🏈 Futebol",
+                baggingExplanation: "O que acabou de acontecer?",
+                baggingText: "Às vezes, a árvore de um elfo dá um presente errado, mas os outros elfos acertam. Quando votam juntos, sua resposta combinada geralmente é mais confiável do que usar apenas uma árvore. Trabalhar em equipe ajuda a reduzir erros aleatórios.",
+                biasExplanation: "O que acabou de acontecer?",
+                biasText: "Alex e Bella correspondem ao que os elfos haviam aprendido, então a votação funcionou bem. Mas Charlie veio de uma escola diferente com preferências de presentes diferentes. Todos os elfos haviam aprendido a mesma regra de dados semelhantes, então todos fizeram a mesma predição errada. Quando cada árvore compartilha a mesma ideia, todas podem estar erradas juntas.",
+                back: "← Voltar",
+                next: "Próximo →",
+                student1Happy: "🎉 Ótima escolha! O aluno está feliz! Tanto o elfo principal quanto o voto majoritário estavam corretos!",
+                student1NotHappy: "😔 O aluno não está feliz. Tente escolher o que a maioria votou!",
+                student2Happy: "🎉 Ótima escolha! O aluno está feliz! O voto majoritário estava correto, mesmo que o elfo principal estivesse errado!",
+                student2NotHappy: "😔 O aluno não está feliz. O voto majoritário estava correto - tente escolher o que a maioria votou!",
+                student3NotHappyMajority: "😔 O aluno ainda não está feliz, mesmo que você tenha escolhido o que a maioria votou! Isso mostra viés no modelo.",
+                student3NotHappy: "A maioria não votou em Futebol. Este é um caso onde mesmo o voto majoritário estava errado devido ao viés!"
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('language') || 'en';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            updateTranslations();
+        }
+
+        function updateTranslations() {
+            const t = translations[currentLanguage];
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (t[key]) {
+                    if (el.tagName === 'INPUT') {
+                        el.value = t[key];
+                    } else if (el.tagName === 'BUTTON') {
+                        el.textContent = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            });
+            document.getElementById('language-select').value = currentLanguage;
+            // Update predictions display with new language
+            initializePredictions();
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('language-select').value = currentLanguage;
+            updateTranslations();
+        });
+
         // Define the 5 elves and their tree thresholds
         // Main Elf + 4 Helpers
         const elves = [
@@ -545,6 +712,7 @@
          * Initialize all students' predictions on page load
          */
         function initializePredictions() {
+            const t = translations[currentLanguage];
             students.forEach((student, index) => {
                 const studentNum = index + 1;
                 const predictions = getAllPredictions(student.age, studentNum);
@@ -553,7 +721,7 @@
 
                 // Display main elf prediction
                 const mainElfDiv = document.getElementById(`main-elf-${studentNum}`);
-                mainElfDiv.textContent = mainElfPred.prediction === 'Storybook' ? '📚 Storybook' : '🏈 Football';
+                mainElfDiv.textContent = mainElfPred.prediction === 'Storybook' ? t.storybook : t.football;
 
                 // Display all elves' predictions
                 const allElvesDiv = document.getElementById(`all-elves-${studentNum}`);
@@ -563,14 +731,14 @@
                     item.className = 'elf-prediction-item';
                     item.innerHTML = `
                         <span class="elf-name">${elf.name}:</span>
-                        <span class="elf-prediction">${elf.prediction === 'Storybook' ? '📚 Storybook' : '🏈 Football'}</span>
+                        <span class="elf-prediction">${elf.prediction === 'Storybook' ? t.storybook : t.football}</span>
                     `;
                     allElvesDiv.appendChild(item);
                 });
 
                 // Display majority vote
                 const majorityDiv = document.getElementById(`majority-${studentNum}`);
-                majorityDiv.textContent = majority === 'Storybook' ? '📚 Storybook' : '🏈 Football';
+                majorityDiv.textContent = majority === 'Storybook' ? t.storybook : t.football;
             });
         }
 
@@ -578,6 +746,7 @@
          * Handle student's choice
          */
         function makeChoice(studentNum, chosenGift) {
+            const t = translations[currentLanguage];
             const student = students[studentNum - 1];
             const predictions = getAllPredictions(student.age, studentNum);
             const mainElfPred = predictions.find(p => p.isMain);
@@ -602,18 +771,18 @@
                 // Student happy if chooses correctly (which matches both)
                 isHappy = chosenGift === student.correctGift;
                 if (isHappy) {
-                    message = '🎉 Great choice! The student is happy! Both the main elf and majority vote were correct!';
+                    message = t.student1Happy;
                 } else {
-                    message = '😔 The student is not happy. Try choosing what the majority voted for!';
+                    message = t.student1NotHappy;
                 }
             } else if (studentNum === 2) {
                 // Case 2: Main wrong, majority correct
                 // Student happy only if chooses what majority voted
                 isHappy = chosenGift === majority;
                 if (isHappy) {
-                    message = '🎉 Great choice! The student is happy! The majority vote was correct, even though the main elf was wrong!';
+                    message = t.student2Happy;
                 } else {
-                    message = '😔 The student is not happy. The majority vote was correct - try choosing what the majority voted for!';
+                    message = t.student2NotHappy;
                 }
                 
                 // Show bagging explanation
@@ -623,9 +792,9 @@
                 // Student NOT happy even if chooses majority
                 isHappy = false;
                 if (chosenGift === majority) {
-                    message = '😔 The student is still not happy, even though you chose what the majority voted for! This shows bias in the model.';
+                    message = t.student3NotHappyMajority;
                 } else {
-                    message = 'The Majority did not vote for Football. This is a case where even the majority vote was wrong due to bias!';
+                    message = t.student3NotHappy;
                 }
                 
                 // Show bias explanation
